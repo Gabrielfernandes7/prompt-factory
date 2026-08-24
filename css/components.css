@@ -1,0 +1,13 @@
+/* Shared component states */
+.header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.theme-toggle { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--muted); padding: 7px 10px; font-size: .82rem; cursor: pointer; }
+.mode-nav { display: flex; gap: 4px; margin-top: 20px; border-bottom: 1px solid var(--border); }
+.mode-tab { border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); padding: 9px 12px 10px; font-weight: 650; cursor: pointer; }
+.mode-tab.active { color: var(--text); border-bottom-color: var(--focus); }
+.mode-tab span { font-size: .7rem; font-weight: 500; color: var(--muted); }
+.advanced-section { display: none; }
+body.mode-build .explore-panel { display: none; }
+body.mode-build .advanced-section { display: block; }
+body.mode-library .explore-panel, body.mode-library .advanced-section { display: none; }
+body.mode-library #libraryPanel { display: block; }
+.theme-toggle:focus-visible, .mode-tab:focus-visible { outline: 3px solid rgba(111, 66, 193, .25); outline-offset: 2px; }

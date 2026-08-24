@@ -1,0 +1,11 @@
+/* Theme-specific surfaces and controls */
+[data-theme="dark"] header { background: rgba(32, 35, 40, .88); }
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .preview,
+[data-theme="dark"] .tech-card,
+[data-theme="dark"] .saved-item { background: #202328; color: var(--text); }
+[data-theme="dark"] .btn { background: #252a30; color: var(--text); }
+[data-theme="dark"] .btn.primary { background: var(--primary); color: #17191c; }
+[data-theme="dark"] .modal-box { background: var(--surface); }

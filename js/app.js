@@ -162,7 +162,65 @@ const modal = $('#saveModal');
 const nameInput = $('#promptName');
 const techGrid = $('#techGrid');
 let editingId = null;
-const KEY = 'prompt-factory-library-v1';
+let activePromptOverride = '';
+let activeExploreTemplate = null;
+
+const exploreTemplates = [
+    { id:'debug-code', category:'programming', title:'Investigar um erro no código', framework:'ctf', techniques:['constraints','structured-output'], intro:'Encontre a causa de um problema e receba uma correção explicada.', fields:[['Código ou erro','Cole o trecho de código, mensagem de erro ou comportamento inesperado.'],['O que deveria acontecer?','Descreva o resultado esperado.'],['Restrições','Versão, linguagem, bibliotecas ou limites importantes.']] },
+    { id:'explain-code', category:'programming', title:'Entender um código', framework:'ctf', techniques:['context','structured-output'], intro:'Transforme código difícil em uma explicação clara e prática.', fields:[['Código','Cole o trecho que você quer entender.'],['Seu nível de conhecimento','Por exemplo: iniciante, intermediário ou experiente.'],['O que quer entender?','Diga se quer uma visão geral, uma linha específica ou os riscos.']] },
+    { id:'write-content', category:'marketing', title:'Escrever conteúdo para uma campanha', framework:'costar', techniques:['context','structured-output'], intro:'Crie uma peça de conteúdo alinhada ao público e ao objetivo.', fields:[['O que está divulgando?','Produto, serviço ou ideia.'],['Para quem?','Descreva o público.'],['Objetivo e canal','Ex.: gerar cliques no Instagram, explicar em um blog.'],['Tom desejado','Ex.: direto, educativo, próximo.']] },
+    { id:'study-topic', category:'studies', title:'Estudar um assunto', framework:'ctf', techniques:['structured-output'], intro:'Organize uma explicação ou plano de estudo que faça sentido para você.', fields:[['Assunto','O que você quer aprender?'],['Seu nível atual','O que já sabe sobre o assunto?'],['Como quer estudar?','Ex.: resumo, exemplos, perguntas, plano de 7 dias.']] },
+    { id:'business-decision', category:'business', title:'Analisar uma decisão de negócio', framework:'race', techniques:['context','constraints','structured-output'], intro:'Compare opções e chegue a uma decisão com critérios claros.', fields:[['Situação','Descreva o negócio e o problema.'],['Opções','Quais caminhos estão sendo considerados?'],['Critérios','O que pesa na decisão: custo, prazo, risco ou outro?'],['Formato da análise','Ex.: tabela comparativa e recomendação final.']] },
+    { id:'review-code', category:'programming', title:'Revisar um código', framework:'rtf', techniques:['constraints','structured-output'], intro:'Receba uma revisão objetiva com prioridades e sugestões.', fields:[['Código','Cole o código para revisar.'],['Foco da revisão','Ex.: segurança, legibilidade, desempenho ou tudo.'],['Contexto técnico','Linguagem, framework e versão.']] },
+    { id:'api-design', category:'programming', title:'Projetar uma API', framework:'risen', techniques:['constraints','structured-output'], intro:'Estruture uma proposta de API com decisões justificadas.', fields:[['O que a API precisa fazer?','Descreva os recursos principais.'],['Quem vai usar?','Clientes, frontend, parceiros ou outro público.'],['Regras e limites','Autenticação, volume, compatibilidade ou restrições.']] },
+    { id:'social-post', category:'marketing', title:'Criar uma publicação para redes sociais', framework:'costar', techniques:['context','structured-output'], intro:'Crie uma publicação pronta para o canal escolhido.', fields:[['Tema ou oferta','O que a publicação deve comunicar?'],['Público','Para quem você está falando?'],['Canal e objetivo','Ex.: Instagram para gerar comentários.'],['Tom e chamada','Como deve soar e qual ação pedir?']] },
+    { id:'email', category:'marketing', title:'Escrever um e-mail profissional', framework:'care', techniques:['context','structured-output'], intro:'Escreva um e-mail claro, adequado ao contexto e ao destinatário.', fields:[['Situação','O que aconteceu ou precisa ser comunicado?'],['Destinatário','Quem receberá o e-mail?'],['Resultado desejado','O que a pessoa deve entender ou fazer?']] },
+    { id:'flashcards', category:'studies', title:'Criar perguntas para revisar', framework:'ape', techniques:['structured-output'], intro:'Gere perguntas úteis para testar sua compreensão.', fields:[['Tema','Qual conteúdo revisar?'],['Nível','Fácil, médio ou difícil?'],['Quantidade e formato','Ex.: 10 perguntas com respostas ao final.']] },
+    { id:'study-plan', category:'studies', title:'Montar um plano de estudos', framework:'race', techniques:['constraints','structured-output'], intro:'Monte uma sequência de estudo possível de seguir.', fields:[['Objetivo','O que você quer conseguir aprender?'],['Tempo disponível','Horas por dia ou prazo final.'],['Ponto de partida','O que já sabe?'],['Preferências e limites','Materiais, formato ou assuntos que devem entrar.']] },
+    { id:'summarize', category:'studies', title:'Resumir um material', framework:'ctf', techniques:['structured-output'], intro:'Extraia as ideias principais sem perder o sentido do material.', fields:[['Material','Cole o texto ou descreva o conteúdo.'],['Para que usará o resumo?','Ex.: revisão, apresentação ou decisão.'],['Formato','Ex.: tópicos, mapa de ideias ou resumo de 1 página.']] },
+    { id:'business-plan', category:'business', title:'Planejar um novo projeto', framework:'risen', techniques:['constraints','structured-output'], intro:'Transforme uma ideia em um plano com próximos passos.', fields:[['Ideia','Descreva o projeto.'],['Resultado esperado','O que precisa estar pronto?'],['Recursos disponíveis','Equipe, orçamento e prazo.'],['Riscos ou limites','O que não pode acontecer?']] },
+    { id:'meeting', category:'business', title:'Preparar uma reunião', framework:'rtf', techniques:['structured-output'], intro:'Prepare uma pauta objetiva e fácil de conduzir.', fields:[['Objetivo','O que a reunião precisa resolver?'],['Participantes e contexto','Quem participa e o que já foi discutido?'],['Formato desejado','Ex.: pauta com tempo, perguntas e decisões.']] },
+    { id:'process', category:'business', title:'Melhorar um processo', framework:'ctf', techniques:['context','constraints','structured-output'], intro:'Encontre gargalos e proponha melhorias práticas.', fields:[['Processo atual','Descreva as etapas.'],['Problema percebido','Onde há atraso, erro ou retrabalho?'],['Restrições','O que não pode mudar?'],['Resultado desejado','Como saberemos que melhorou?']] },
+    { id:'free-form', category:'business', title:'Organizar uma ideia', framework:'ape', techniques:['structured-output'], intro:'Dê forma a uma ideia ainda solta e transforme-a em próximos passos.', fields:[['Ideia','Descreva livremente.'],['Por que isso importa?','Qual problema ou oportunidade existe?'],['O que você quer receber?','Ex.: opções, plano, texto ou perguntas.']] },
+    { id:'test-code', category:'programming', title:'Criar testes para um código', framework:'risen', techniques:['constraints','structured-output'], intro:'Cubra os cenários importantes com testes claros.', fields:[['Código ou função','Cole o código que será testado.'],['Comportamentos esperados','O que deve funcionar?'],['Ferramentas e limites','Linguagem, framework de testes ou restrições.']] },
+    { id:'landing-page', category:'marketing', title:'Planejar uma página de venda', framework:'costar', techniques:['context','structured-output'], intro:'Organize a mensagem e a estrutura de uma página que converte.', fields:[['Produto e benefício','O que está sendo oferecido?'],['Público e objeções','Quem compra e quais dúvidas tem?'],['Objetivo e tom','Qual ação espera e como quer comunicar?']] },
+    { id:'campaign-ideas', category:'marketing', title:'Gerar ideias de campanha', framework:'crispe', techniques:['context','structured-output'], intro:'Explore ideias de campanha com ângulos diferentes e critérios práticos.', fields:[['Oferta ou tema','O que a campanha deve promover?'],['Público e canal','Para quem e onde será divulgada?'],['Objetivo','Qual resultado quer alcançar?'],['Limites','Orçamento, tom ou assuntos a evitar.']] },
+    { id:'practice', category:'studies', title:'Praticar com exercícios', framework:'ape', techniques:['structured-output'], intro:'Crie exercícios progressivos para fixar um conteúdo.', fields:[['Tema','O que praticar?'],['Seu nível','O que já consegue fazer?'],['Formato da prática','Ex.: 5 exercícios com dicas e gabarito.']] },
+];
+const exploreCategories = { programming:['Programação','Código, APIs e problemas técnicos.'], marketing:['Marketing Digital','Conteúdo, campanhas e comunicação.'], studies:['Estudos','Aprendizado, revisão e organização.'], business:['Negócios','Decisões, processos e projetos.'] };
+
+function renderExploreCategories() {
+    $('#exploreCategories').innerHTML = Object.entries(exploreCategories).map(([id, item]) => `<button class="category-card" data-category="${id}" type="button"><strong>${item[0]}</strong><span>${item[1]}</span></button>`).join('');
+}
+function renderExploreForm(category) {
+    const items = exploreTemplates.filter(t => t.category === category);
+    $('#exploreCategories').innerHTML = items.map(t => `<button class="category-card template-card" data-template="${t.id}" type="button"><strong>${t.title}</strong><span>${t.intro}</span></button>`).join('');
+    $('#exploreForm').hidden = true;
+    $('#exploreResult').hidden = true;
+    $('#exploreCategories').insertAdjacentHTML('beforebegin', `<button class="back-link" id="exploreBack" type="button">← Todas as áreas</button>`);
+}
+function openExploreTemplate(id) {
+    const t = exploreTemplates.find(item => item.id === id);
+    if (!t) return;
+    $('#exploreCategories').hidden = true;
+    $('#exploreForm').hidden = false;
+    $('#exploreForm').innerHTML = `<h3>${esc(t.title)}</h3><p>${esc(t.intro)}</p><form id="exploreQuestionForm">${t.fields.map((field, i) => `<div class="field"><label for="explore-${i}">${esc(field[0])}</label><textarea id="explore-${i}" data-label="${esc(field[0])}" placeholder="${esc(field[1])}" required></textarea></div>`).join('')}<button class="btn primary" type="submit">Gerar meu prompt</button></form>`;
+    $('#exploreQuestionForm').addEventListener('submit', e => { e.preventDefault(); generateExplorePrompt(t); });
+    document.getElementById('explore-0').focus();
+}
+function generateExplorePrompt(template) {
+    const answers = [...document.querySelectorAll('#exploreQuestionForm textarea')].map(el => `${el.dataset.label}:\n${el.value.trim()}`).filter(item => !item.endsWith(':\n'));
+    if (!answers.length) return toast('Preencha pelo menos uma resposta.');
+    activePromptOverride = `Você é um assistente especializado em ${exploreCategories[template.category][0].toLowerCase()}.\n\nObjetivo:\n${template.title}.\n\n${answers.join('\n\n')}\n\nEntregue uma resposta clara, prática e organizada. Quando faltar informação importante, indique a suposição feita.`;
+    activeExploreTemplate = template;
+    $('#exploreResultTitle').textContent = template.title;
+    $('#explorePrompt').textContent = activePromptOverride;
+    $('#exploreResult').hidden = false;
+    $('#exploreResult').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    toast('Prompt estruturado.');
+}
+function currentPrompt() { return activePromptOverride || buildPrompt(); }
+function activeExploreOverride() { return Boolean(activePromptOverride && activeExploreTemplate); }
 
 Object.entries(frameworks).forEach(([k, v]) => technique.add(new Option(v.name, k)));
 
@@ -256,25 +314,19 @@ async function copyText(text) {
 }
 
 function getLibrary() {
-    try {
-        return JSON.parse(localStorage.getItem(KEY)) ||
-            JSON.parse(localStorage.getItem('prompt-builder-library-v1')) ||
-            [];
-    } catch {
-        return [];
-    }
+    return PromptFactoryStorage.read();
 }
 
 function setLibrary(v) {
-    localStorage.setItem(KEY, JSON.stringify(v));
+    PromptFactoryStorage.write(v);
     renderLibrary();
 }
 
 function openSave() {
-    if (!buildPrompt()) return toast('Preencha ao menos um campo.');
+    if (!currentPrompt()) return toast('Preencha ao menos um campo.');
     nameInput.value = '';
     $('#modalTitle').textContent = editingId ? 'Atualizar prompt' : 'Salvar prompt';
-    $('#modalFramework').textContent = frameworks[technique.value].name;
+    $('#modalFramework').textContent = activePromptOverride ? 'Explore · prompt estruturado' : frameworks[technique.value].name;
     modal.classList.add('open');
     setTimeout(() => nameInput.focus(), 30);
 }
@@ -287,9 +339,10 @@ function savePrompt() {
     const name = nameInput.value.trim();
     if (!name) return nameInput.focus();
     const lib = getLibrary();
-    const content = buildPrompt();
+    const content = currentPrompt();
     const fields = {};
     form.querySelectorAll('textarea').forEach(el => fields[el.dataset.label] = el.value);
+    if (activeExploreOverride()) document.querySelectorAll('#exploreQuestionForm textarea').forEach(el => fields[el.dataset.label] = el.value);
 
     const wasEditing = Boolean(editingId);
     if (editingId) {
@@ -297,18 +350,22 @@ function savePrompt() {
         if (i >= 0) lib[i] = {
             ...lib[i],
             name,
-            framework: technique.value,
+            framework: activeExploreOverride() ? activeExploreTemplate.framework : technique.value,
             content,
             fields,
+            source: activeExploreOverride() ? 'explore' : 'build',
+            templateId: activeExploreOverride() ? activeExploreTemplate.id : null,
             updatedAt: new Date().toISOString()
         };
     } else {
         lib.unshift({
             id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
             name,
-            framework: technique.value,
+            framework: activeExploreOverride() ? activeExploreTemplate.framework : technique.value,
             content,
             fields,
+            source: activeExploreOverride() ? 'explore' : 'build',
+            templateId: activeExploreOverride() ? activeExploreTemplate.id : null,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
         });
@@ -332,7 +389,7 @@ function esc(s = '') {
 function renderLibrary() {
     const lib = getLibrary();
     if (!lib.length) {
-        savedList.innerHTML = '<div class="empty" style="grid-column:1/-1"><strong>Nenhum prompt salvo.</strong><span>Os prompts que você salvar no Builder aparecerão aqui.</span></div>';
+        savedList.innerHTML = `<div style="grid-column:1/-1">${PromptFactoryComponents.emptyState('Nenhum prompt salvo.', 'Os prompts que você salvar no Builder aparecerão aqui.')}</div>`;
         return;
     }
     savedList.innerHTML = lib.map(p => {
@@ -354,6 +411,20 @@ function renderLibrary() {
 }
 
 function loadPrompt(p, edit = false) {
+    if (p.source === 'explore' && p.templateId) {
+        const template = exploreTemplates.find(item => item.id === p.templateId);
+        if (template) {
+            document.body.classList.remove('mode-build', 'mode-library');
+            document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.mode === 'explore'));
+            renderExploreCategories();
+            openExploreTemplate(template.id);
+            template.fields.forEach((field, i) => { const input = $(`#explore-${i}`); if (input) input.value = p.fields?.[field[0]] || ''; });
+            editingId = edit ? p.id : null;
+            generateExplorePrompt(template);
+            toast(edit ? 'Prompt aberto para edição.' : 'Prompt aberto.');
+            return;
+        }
+    }
     const framework = p.framework || p.technique;
     if (!frameworks[framework]) return toast('Framework não reconhecido.');
     technique.value = framework;
@@ -487,6 +558,34 @@ $('#fileInput').addEventListener('change', e => {
     if (e.target.files[0]) importJSON(e.target.files[0]);
 });
 
+$('#exploreCopyBtn').onclick = () => copyText(activePromptOverride);
+$('#exploreSaveBtn').onclick = openSave;
+$('#exploreRestartBtn').onclick = () => { activePromptOverride = ''; activeExploreTemplate = null; $('#exploreResult').hidden = true; $('#exploreForm').hidden = false; };
+document.addEventListener('click', e => {
+    const mode = e.target.closest('[data-mode]');
+    if (mode) {
+        document.body.classList.remove('mode-build', 'mode-library');
+        if (mode.dataset.mode !== 'explore') document.body.classList.add(`mode-${mode.dataset.mode}`);
+        if (mode.dataset.mode === 'build') { activePromptOverride = ''; activeExploreTemplate = null; }
+        document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.toggle('active', tab === mode));
+    }
+    const category = e.target.closest('[data-category]');
+    if (category) renderExploreForm(category.dataset.category);
+    const template = e.target.closest('[data-template]');
+    if (template) openExploreTemplate(template.dataset.template);
+    if (e.target.id === 'exploreBack') { e.target.remove(); $('#exploreCategories').hidden = false; renderExploreCategories(); }
+});
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    $('#themeToggle').setAttribute('aria-label', `Alternar tema. Tema atual: ${theme === 'dark' ? 'escuro' : 'claro'}`);
+    localStorage.setItem('prompt-factory-theme', theme);
+}
+const savedTheme = localStorage.getItem('prompt-factory-theme');
+applyTheme(savedTheme || (new Date().getHours() >= 6 && new Date().getHours() < 18 ? 'light' : 'dark'));
+$('#themeToggle').onclick = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
 renderTechnique();
 renderGuide();
 renderLibrary();
+renderExploreCategories();

@@ -1,0 +1,12 @@
+/* Responsive and reduced-motion rules */
+@media (max-width: 900px) { .explore-categories { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+    .header-row { align-items: center; }
+    .theme-toggle span { display: none; }
+    .explore-categories { grid-template-columns: 1fr 1fr; }
+    .explore-panel { padding: 20px 16px; }
+    .result-heading { flex-direction: column; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

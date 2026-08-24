@@ -1,0 +1,20 @@
+/* Explore mode */
+.explore-panel { grid-column: 1 / -1; padding: clamp(24px, 4vw, 38px); }
+.explore-title { margin: 0; font-size: clamp(1.35rem, 2.5vw, 1.8rem); font-weight: 600; }
+.explore-lede { max-width: 620px; margin: 8px 0 24px; color: var(--muted); }
+.explore-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.category-card { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); text-align: left; padding: 16px; color: var(--text); cursor: pointer; }
+.category-card:hover, .category-card.active { border-color: var(--focus); box-shadow: 0 0 0 2px rgba(111, 66, 193, .1); }
+.category-card strong, .category-card span { display: block; }
+.category-card strong { margin-bottom: 4px; font-size: 1rem; }
+.category-card span { color: var(--muted); font-size: .84rem; }
+.explore-form { max-width: 720px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px; }
+.explore-form h3 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 600; }
+.explore-form > p { color: var(--muted); margin: 0 0 20px; }
+.explore-form textarea { min-height: 92px; }
+.explore-result { margin-top: 25px; border-top: 1px solid var(--border); padding-top: 24px; }
+.result-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.result-heading h3 { margin: 0; font-size: 1.15rem; font-weight: 600; }
+.ready-badge { border-radius: 999px; padding: 4px 9px; background: var(--success-soft); color: var(--success); font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.prompt-preview { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 14px; padding: 18px; min-height: 180px; border: 1px solid var(--border); border-left: 3px solid var(--success); border-radius: 9px; background: var(--surface-2); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9rem; line-height: 1.65; }
+.back-link { border: 0; background: none; padding: 0; margin-bottom: 14px; color: var(--muted); cursor: pointer; }
