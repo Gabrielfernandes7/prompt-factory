@@ -50,8 +50,6 @@ Reduzir a dificuldade de transformar uma intenção em um prompt estruturado.
 - tornar explícitas as partes de um prompt;
 - ajudar na escolha da estrutura;
 - permitir frameworks e técnicas complementares;
-- facilitar reutilização;
-- organizar uma biblioteca pessoal;
 - permitir aprendizado progressivo;
 - preservar o controle autoral do usuário.
 
@@ -73,7 +71,7 @@ O Prompt Factory não garante que determinado framework produzirá necessariamen
 
 **P05 — Exemplos ensinam, não preenchem.** Exemplos e placeholders nunca entram automaticamente no conteúdo.
 
-**P06 — O conteúdo pertence ao usuário.** Operações de salvar, editar, duplicar, excluir, importar e exportar devem ser previsíveis.
+**P06 — O conteúdo pertence ao usuário.** O sistema não persiste nem reutiliza o conteúdo no MVP.
 
 **P07 — Estrutura visível.** O usuário deve entender de onde cada parte do prompt final surgiu.
 
@@ -106,7 +104,6 @@ Os conceitos centrais são:
 6. Adequação
 7. Template
 8. Prompt
-9. Biblioteca pessoal
 
 Eles possuem responsabilidades distintas e não devem ser tratados como equivalentes.
 
@@ -433,8 +430,7 @@ Responsabilidades:
 - receber conteúdo;
 - mostrar exemplos;
 - mostrar a anatomia;
-- compor o resultado;
-- salvar e reutilizar.
+- compor o resultado.
 
 O Builder não decide o conteúdo pelo usuário.
 
@@ -540,23 +536,7 @@ As recomendações devem ser determinísticas e explicáveis.
 
 ## 19. Biblioteca pessoal
 
-Representa os prompts reutilizáveis do usuário.
-
-Responsabilidades:
-
-- salvar;
-- abrir;
-- editar;
-- duplicar;
-- excluir;
-- copiar;
-- categorizar;
-- favoritar;
-- pesquisar;
-- importar;
-- exportar.
-
-O conceito é de **prompt reutilizável**, não apenas texto salvo.
+Fora do escopo do MVP. O produto não salva, edita, duplica, exclui, importa ou exporta prompts.
 
 ---
 
@@ -623,18 +603,6 @@ PROMPT FACTORY
 │   ├── Anatomia
 │   └── Preview
 │
-├── Reutilização
-│   ├── Templates
-│   └── Prompts pessoais
-│
-├── Organização
-│   ├── Categorias
-│   ├── Favoritos
-│   └── Busca
-│
-└── Portabilidade
-    ├── Importação
-    └── Exportação
 ```
 
 ---
@@ -643,32 +611,15 @@ PROMPT FACTORY
 
 ### MVP
 
-- **UC01 — Explorar frameworks**
-- **UC02 — Consultar framework**
-- **UC03 — Selecionar framework**
-- **UC04 — Construir prompt**
-- **UC05 — Visualizar prompt**
-- **UC06 — Salvar prompt**
-- **UC07 — Abrir prompt**
-- **UC08 — Editar prompt**
-- **UC09 — Duplicar prompt**
-- **UC10 — Excluir prompt**
-- **UC11 — Copiar prompt**
-- **UC12 — Exportar biblioteca**
-- **UC13 — Importar biblioteca**
-
-### Evoluções
-
-- **UC14 — Explorar por intenção**
-- **UC15 — Informar necessidades**
-- **UC16 — Receber orientação**
-- **UC17 — Utilizar template**
-- **UC18 — Aplicar técnica complementar**
-- **UC19 — Categorizar prompt**
-- **UC20 — Favoritar prompt**
-- **UC21 — Pesquisar biblioteca**
-- **UC22 — Revisar anatomia**
-- **UC23 — Realizar diagnóstico estrutural**
+- **UC01 — Explorar frameworks por intenção**
+- **UC02 — Informar necessidades**
+- **UC03 — Receber recomendações explicadas**
+- **UC04 — Consultar framework e seus componentes**
+- **UC05 — Selecionar framework**
+- **UC06 — Construir prompt**
+- **UC07 — Visualizar prompt em tempo real**
+- **UC08 — Copiar prompt**
+- **UC09 — Consultar técnicas complementares**
 
 ---
 
@@ -678,13 +629,6 @@ PROMPT FACTORY
 - **RN02** — Componentes possuem ordem definida.
 - **RN03** — Exemplos e placeholders nunca entram automaticamente no conteúdo.
 - **RN04** — Alterar o framework não pode descartar conteúdo silenciosamente.
-- **RN05** — Todo prompt salvo possui identidade própria.
-- **RN06** — Editar preserva a identidade.
-- **RN07** — Duplicar cria uma nova identidade.
-- **RN08** — A data de criação não muda durante edição.
-- **RN09** — A data de atualização muda quando alterações são persistidas.
-- **RN10** — Importação não pode destruir silenciosamente dados existentes.
-- **RN11** — Um prompt deve continuar interpretável caso seu framework evolua.
 - **RN12** — Frameworks e técnicas são conceitos distintos.
 - **RN13** — Uma intenção pode estar relacionada a múltiplos frameworks.
 - **RN14** — Um framework pode atender múltiplas intenções.
@@ -706,14 +650,7 @@ PROMPT FACTORY
 - **RF07** — Preencher componentes individualmente.
 - **RF08** — Compor representação final.
 - **RF09** — Atualizar a representação conforme alterações.
-- **RF10** — Salvar construção.
-- **RF11** — Recuperar construção salva.
-- **RF12** — Editar construção.
-- **RF13** — Duplicar construção.
-- **RF14** — Excluir construção.
 - **RF15** — Copiar representação final.
-- **RF16** — Exportar biblioteca.
-- **RF17** — Importar biblioteca.
 - **RF18** — Explorar frameworks por intenção.
 - **RF19** — Apresentar frameworks relacionados à intenção.
 - **RF20** — Justificar recomendações.
@@ -743,9 +680,6 @@ Operações destrutivas não devem provocar perda silenciosa de conteúdo.
 ### Desempenho percebido
 Alterações durante a construção devem ser refletidas imediatamente.
 
-### Portabilidade dos dados
-A biblioteca pessoal deve poder ser exportada e restaurada.
-
 ### Privacidade
 O conteúdo criado deve permanecer sob controle do usuário dentro do escopo do produto.
 
@@ -765,15 +699,15 @@ Recomendações devem apresentar motivos compreensíveis.
 - construção estruturada;
 - preview;
 - anatomia;
-- biblioteca pessoal;
-- edição e duplicação;
 - templates;
 - categorias;
 - busca;
-- favoritos;
-- importação/exportação.
 
 ### Fora do escopo inicial
+
+- biblioteca pessoal e persistência;
+- salvar, editar, duplicar e excluir prompts;
+- importação/exportação;
 
 - executar prompts em modelos;
 - chatbot;
@@ -808,7 +742,7 @@ Preencher
    ↓
 Revisar
    ↓
-Salvar
+Copiar
 ```
 
 ### Usuário conhece apenas sua necessidade
@@ -839,8 +773,6 @@ Frameworks + Técnicas
 - frameworks;
 - explicações;
 - preview;
-- biblioteca pessoal;
-- importação/exportação.
 
 ### Fase 2 — Descoberta
 
@@ -901,17 +833,14 @@ A evolução deve seguir necessidades validadas, evitando funcionalidades adicio
                           │
                           ▼
                         PROMPT
-                          │
-                          ▼
-                 BIBLIOTECA PESSOAL
 ```
 
 ---
 
 ## 31. Definição resumida
 
-> **Prompt Factory é um ambiente para aprender, descobrir, estruturar, construir, organizar e reutilizar prompts de forma consciente. Ele conecta a intenção do usuário a frameworks e técnicas adequados, explica o motivo das recomendações e orienta a construção sem substituir o usuário na escrita do conteúdo.**
+> **Prompt Factory é um ambiente para aprender, descobrir, estruturar e construir prompts de forma consciente. Ele conecta a intenção do usuário a frameworks e técnicas adequados, explica o motivo das recomendações e orienta a construção sem substituir o usuário na escrita do conteúdo.**
 
 O diferencial do produto não é gerar prompts automaticamente.
 
-O diferencial é transformar engenharia de prompts em um processo **compreensível, estruturado, orientado e reutilizável**.
+O diferencial é transformar engenharia de prompts em um processo **compreensível, estruturado e orientado**.
