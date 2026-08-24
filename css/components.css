@@ -8,6 +8,6 @@
 .advanced-section { display: none; }
 body.mode-build .explore-panel { display: none; }
 body.mode-build .advanced-section { display: block; }
-body.mode-library .explore-panel, body.mode-library .advanced-section { display: none; }
-body.mode-library #libraryPanel { display: block; }
 .theme-toggle:focus-visible, .mode-tab:focus-visible { outline: 3px solid rgba(111, 66, 193, .25); outline-offset: 2px; }
+.framework-card-head { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.guide-empty { grid-column: 1 / -1; }

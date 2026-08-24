@@ -20,8 +20,7 @@
             </div>
             <nav class="mode-nav" aria-label="Modo de trabalho">
                 <button class="mode-tab active" data-mode="explore" type="button">Explore</button>
-                <button class="mode-tab" data-mode="build" type="button">Build <span>avançado</span></button>
-                <button class="mode-tab" data-mode="library" type="button">Library</button>
+                <button class="mode-tab" data-mode="build" type="button">Build</button>
             </nav>
         </div>
     </header>
@@ -30,13 +29,13 @@
         <section class="card explore-panel" id="explorePanel">
             <span class="section-label">Explore</span>
             <h2 class="explore-title">O que você quer fazer?</h2>
-            <p class="explore-lede">Escolha uma área e responda algumas perguntas simples. Nós organizamos o prompt para você.</p>
+            <p class="explore-lede">Escolha o que deseja fazer. Nós indicamos estruturas adequadas e você constrói o prompt.</p>
             <div class="explore-categories" id="exploreCategories" role="list"></div>
-            <div id="exploreForm" class="explore-form" hidden></div>
             <div id="exploreResult" class="explore-result" hidden>
-                <div class="result-heading"><div><span class="section-label">Prompt pronto</span><h3 id="exploreResultTitle"></h3></div><span class="ready-badge">Pronto para copiar</span></div>
-                <div id="explorePrompt" class="prompt-preview"></div>
-                <div class="actions"><button class="btn primary" id="exploreCopyBtn" type="button">Copiar Prompt</button><button class="btn" id="exploreSaveBtn" type="button">Salvar Prompt</button><button class="btn" id="exploreRestartBtn" type="button">Começar de novo</button></div>
+                <div class="result-heading"><div><span class="section-label">Recomendação</span><h3 id="exploreResultTitle"></h3></div></div>
+                <p id="exploreNeeds" class="help"></p>
+                <div id="exploreRecommendations" class="recommendation-grid"></div>
+                <div class="actions"><button class="btn" id="exploreRestartBtn" type="button">Começar de novo</button></div>
             </div>
         </section>
 
@@ -61,7 +60,6 @@
             <div class="actions">
                 <button class="btn primary" id="copyBtn" type="button">Copiar Prompt</button>
                 <button class="btn" id="clearBtn" type="button">Limpar</button>
-                <button class="btn" id="saveBtn" type="button">Salvar Prompt</button>
             </div>
         </aside>
 
@@ -91,74 +89,13 @@
             <span class="section-label">Techniques</span>
             <h2 class="section-title">Técnicas complementares</h2>
             <span class="help">Melhorias que podem ser aplicadas a diferentes frameworks.</span>
-            <div class="principle-grid">
-                <div class="principle">
-                    <strong>Contexto relevante</strong>
-                    <span>Inclua informações que mudam a resposta ou reduzem ambiguidades.</span>
-                </div>
-                <div class="principle">
-                    <strong>Instrução específica</strong>
-                    <span>Declare a ação e critérios observáveis em vez de pedidos vagos.</span>
-                </div>
-                <div class="principle">
-                    <strong>Formato explícito</strong>
-                    <span>Defina estrutura, tamanho, campos, ordem ou esquema da saída.</span>
-                </div>
-                <div class="principle">
-                    <strong>Few-shot / exemplos</strong>
-                    <span>Mostre entradas e saídas quando o padrão for difícil de descrever.</span>
-                </div>
-                <div class="principle">
-                    <strong>Delimitadores</strong>
-                    <span>Separe contexto, dados e instruções com marcadores claros.</span>
-                </div>
-                <div class="principle">
-                    <strong>Restrições</strong>
-                    <span>Explicite limites, exclusões e critérios que a resposta deve respeitar.</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Library -->
-        <section class="card library" id="libraryPanel">
-            <span class="section-label">Library</span>
-            <div class="library-head">
-                <div>
-                    <h2 class="section-title">Prompts salvos</h2>
-                    <span class="help">Sua biblioteca fica armazenada somente neste navegador.</span>
-                </div>
-                <div class="library-actions">
-                    <button class="btn" id="exportBtn">Exportar JSON</button>
-                    <button class="btn" id="importBtn">Importar JSON</button>
-                    <input id="fileInput" type="file" accept="application/json,.json" hidden>
-                </div>
-            </div>
-            <div id="savedList" class="saved-list"></div>
+            <div class="principle-grid" id="techniqueGrid"></div>
         </section>
     </main>
 
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Modal -->
-    <div class="modal" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-box" tabindex="-1">
-            <h2 id="modalTitle">Salvar Prompt</h2>
-            <div class="field">
-                <label for="promptName">Nome do prompt</label>
-                <span class="help">Use um nome que facilite encontrar este prompt depois.</span>
-                <input id="promptName" placeholder="Ex.: Análise de endpoint Spring">
-                <p class="modal-framework"><span>Framework</span><strong id="modalFramework"></strong></p>
-            </div>
-            <div class="modal-actions">
-                <button class="btn" id="cancelSave">Cancelar</button>
-                <button class="btn primary" id="confirmSave">Salvar</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/storage.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
