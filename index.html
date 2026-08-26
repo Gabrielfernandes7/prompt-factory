@@ -94,16 +94,16 @@
                     <span class="help">Estruturas para diferentes tipos de problema.</span>
                 </div>
                 <div class="guide-controls">
-                    <input id="guideSearch" type="search" placeholder="Buscar técnica ou uso...">
-                    <select id="guideLevel">
-                        <option value="all">Todos os níveis</option>
-                        <option value="Básico">Básico</option>
-                        <option value="Intermediário">Intermediário</option>
-                        <option value="Avançado">Avançado</option>
-                    </select>
+                    <input id="librarySearch" type="search" placeholder="Buscar prompt, domínio ou tag...">
+                    <select id="guideDomain"><option value="">Todos os domínios</option></select>
+                    <select id="guideTechnique"><option value="">Todas as técnicas</option></select>
                 </div>
             </div>
-            <div id="techGrid" class="tech-grid"></div>
+            <div id="promptLibraryGrid" class="tech-grid"></div>
+            <div id="libraryPreview" class="library-preview" hidden></div>
+            <input id="guideSearch" type="hidden" value="">
+            <select id="guideLevel" hidden><option value="all">Todos os níveis</option></select>
+            <div id="techGrid" class="tech-grid" hidden></div>
         </section>
 
         <!-- Techniques -->

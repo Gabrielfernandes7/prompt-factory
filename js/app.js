@@ -1,4 +1,6 @@
 import { techniques } from './data/techniques.js';
+import { promptLibrary } from './data/prompt-library.js';
+import { createPromptLibrary } from './library.js';
 import { createBuilder } from './builder.js';
 import { createExplore } from './explore.js';
 import { $, copyText, createToast, escapeHtml, initializeTheme, showMode } from './ui.js';
@@ -18,6 +20,12 @@ const explore = createExplore({
         toast('Framework aberto no Builder. Preencha os componentes com o seu conteúdo.');
     }
 });
+
+const domains = [...new Set(promptLibrary.map(prompt => prompt.domain))];
+const libraryTechniques = [...new Set(promptLibrary.flatMap(prompt => prompt.techniques))];
+$('#guideDomain').insertAdjacentHTML('beforeend', domains.map(domain => `<option value="${escapeHtml(domain)}">${escapeHtml(domain)}</option>`).join(''));
+$('#guideTechnique').insertAdjacentHTML('beforeend', libraryTechniques.map(technique => `<option value="${escapeHtml(technique)}">${escapeHtml(technique)}</option>`).join(''));
+createPromptLibrary({ search: $('#librarySearch'), domain: $('#guideDomain'), technique: $('#guideTechnique'), results: $('#promptLibraryGrid'), preview: $('#libraryPreview'), toast });
 
 $('#techniqueGrid').innerHTML = techniques.map(technique => `<div class="principle"><strong>${escapeHtml(technique.name)}</strong><span>${escapeHtml(technique.description)}</span></div>`).join('');
 
