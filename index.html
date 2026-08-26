@@ -50,6 +50,27 @@
             </div>
             <div id="techInfo" class="tech-info"></div>
             <form id="promptForm"></form>
+            
+            <div class="advanced-options-section">
+                <hr class="options-divider">
+                <h3 class="options-title">Técnicas Avançadas (DAIR.AI)</h3>
+                
+                <div class="field option-field">
+                    <label class="switch-container" for="cotToggle">
+                        <input type="checkbox" id="cotToggle">
+                        <span class="switch-slider"></span>
+                        <span class="switch-label">Ativar Chain-of-Thought (CoT)</span>
+                    </label>
+                    <span class="help">Anexa instruções para que o modelo processe e justifique sua resposta passo a passo.</span>
+                </div>
+
+                <div class="field option-field">
+                    <label>Exemplos de Referência (Few-Shot)</label>
+                    <span class="help">Adicione pares de exemplo de entrada e saída para calibrar o estilo e o formato do modelo.</span>
+                    <div id="fewShotList" class="few-shot-list"></div>
+                    <button class="btn btn-secondary" id="addFewShotBtn" type="button" style="margin-top: 8px;">+ Adicionar Exemplo</button>
+                </div>
+            </div>
         </section>
 
         <!-- Preview Section -->

@@ -6,13 +6,33 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
     const drafts = new Map();
     let activeFramework = Object.keys(frameworks)[0];
 
+    // Advanced features selectors
+    const cotToggle = document.getElementById('cotToggle');
+    const fewShotList = document.getElementById('fewShotList');
+    const addFewShotBtn = document.getElementById('addFewShotBtn');
+
+    let fewShots = []; // array of { id, input, output }
+    let fewShotIdCounter = 0;
+
     const readFields = () => Object.fromEntries(
         [...form.querySelectorAll('textarea')].map(field => [field.dataset.label, field.value])
     );
     const rememberDraft = () => drafts.set(activeFramework, readFields());
 
+    function getFewShotsData() {
+        return fewShots.map(shot => {
+            const inputEl = document.getElementById(`fs-input-${shot.id}`);
+            const outputEl = document.getElementById(`fs-output-${shot.id}`);
+            return {
+                input: inputEl ? inputEl.value : '',
+                output: outputEl ? outputEl.value : ''
+            };
+        });
+    }
+
     function updatePreview() {
-        const content = composePrompt(form);
+        const cotActive = cotToggle ? cotToggle.checked : false;
+        const content = composePrompt(form, cotActive, getFewShotsData());
         preview.innerHTML = content
             ? escapeHtml(content)
             : '<span class="preview-empty-title">Seu prompt aparecerá aqui.</span><span>Escolha um framework e preencha os campos ao lado.</span>';
@@ -54,6 +74,31 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
             </article>`).join('') : '<div class="empty guide-empty">Nenhum framework encontrado.</div>';
     }
 
+    function renderFewShots() {
+        fewShotList.innerHTML = fewShots.map((shot, index) => `
+            <div class="few-shot-item" id="fs-item-${shot.id}">
+                <div class="few-shot-item-header">
+                    <span class="few-shot-item-title">Exemplo ${index + 1}</span>
+                    <button class="few-shot-remove-btn" type="button" data-remove-id="${shot.id}">Excluir</button>
+                </div>
+                <textarea id="fs-input-${shot.id}" placeholder="Exemplo de Entrada (input)...">${escapeHtml(shot.input)}</textarea>
+                <textarea id="fs-output-${shot.id}" placeholder="Exemplo de Saída esperada (output)...">${escapeHtml(shot.output)}</textarea>
+            </div>
+        `).join('');
+
+        fewShots.forEach(shot => {
+            const inputEl = document.getElementById(`fs-input-${shot.id}`);
+            const outputEl = document.getElementById(`fs-output-${shot.id}`);
+            const changeHandler = () => {
+                shot.input = inputEl.value;
+                shot.output = outputEl.value;
+                updatePreview();
+            };
+            if (inputEl) inputEl.addEventListener('input', changeHandler);
+            if (outputEl) outputEl.addEventListener('input', changeHandler);
+        });
+    }
+
     function selectFramework(key, announce = true) {
         if (!frameworks[key]) return;
         rememberDraft();
@@ -72,16 +117,45 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
     search.addEventListener('input', renderGuide);
     level.addEventListener('change', renderGuide);
 
+    // Advanced options listeners
+    if (addFewShotBtn) {
+        addFewShotBtn.addEventListener('click', () => {
+            fewShots.push({ id: ++fewShotIdCounter, input: '', output: '' });
+            renderFewShots();
+            updatePreview();
+        });
+    }
+
+    if (fewShotList) {
+        fewShotList.addEventListener('click', event => {
+            const removeBtn = event.target.closest('[data-remove-id]');
+            if (removeBtn) {
+                const removeId = parseInt(removeBtn.dataset.removeId, 10);
+                fewShots = fewShots.filter(s => s.id !== removeId);
+                renderFewShots();
+                updatePreview();
+            }
+        });
+    }
+
+    if (cotToggle) {
+        cotToggle.addEventListener('change', updatePreview);
+    }
+
     renderForm();
     renderGuide();
     return {
         selectFramework,
         clear() {
-            if (!composePrompt(form) || confirm('Limpar todos os campos deste framework?')) {
+            const currentPrompt = composePrompt(form, cotToggle ? cotToggle.checked : false, getFewShotsData());
+            if (!currentPrompt || confirm('Limpar todos os campos deste framework?')) {
                 drafts.delete(activeFramework);
+                fewShots = [];
+                if (cotToggle) cotToggle.checked = false;
+                renderFewShots();
                 renderForm();
             }
         },
-        getPrompt: () => composePrompt(form)
+        getPrompt: () => composePrompt(form, cotToggle ? cotToggle.checked : false, getFewShotsData())
     };
 }

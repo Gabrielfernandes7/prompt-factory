@@ -1,11 +1,57 @@
 /* Theme-specific surfaces and controls */
-[data-theme="dark"] header { background: rgba(32, 35, 40, .88); }
+header {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+[data-theme="dark"] header {
+    background: rgba(22, 25, 32, 0.85);
+}
+
 [data-theme="dark"] input,
 [data-theme="dark"] select,
 [data-theme="dark"] textarea,
 [data-theme="dark"] .preview,
 [data-theme="dark"] .tech-card,
-[data-theme="dark"] .saved-item { background: #202328; color: var(--text); }
-[data-theme="dark"] .btn { background: #252a30; color: var(--text); }
-[data-theme="dark"] .btn.primary { background: var(--primary); color: #17191c; }
-[data-theme="dark"] .modal-box { background: var(--surface); }
+[data-theme="dark"] .saved-item {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .preview {
+    background: var(--bg);
+}
+
+[data-theme="dark"] .btn {
+    background: var(--surface-2);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .btn:hover {
+    background: var(--border);
+}
+
+[data-theme="dark"] .btn.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #0d0f12;
+}
+
+[data-theme="dark"] .btn.primary:hover {
+    background: var(--primary-hover);
+}
+
+[data-theme="dark"] .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .tech-info {
+    background: var(--surface-2);
+}
