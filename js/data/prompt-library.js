@@ -19,5 +19,26 @@ export const promptLibrary = [
         persona: 'consultor financeiro pragmático', restrictions: 'Separe fatos de hipóteses e não trate a análise como aconselhamento profissional.',
         techniques: ['Risen', 'Structured Output'], tags: ['diagnóstico', 'decisão'],
         template: 'Atue como {{persona}}. Analise este cenário: {{cenario}}. Meu objetivo é {{objetivo}}. Considere as restrições {{restricoes}}. Entregue {{formato}}, separando dados observados, hipóteses, riscos e próximos passos.'
+    },
+    {
+        id: 'auditoria-produto', name: 'Auditoria de produto', domain: 'Produto',
+        subdomain: 'UX e interface', objective: 'Encontrar fricções concretas em uma tela ou fluxo antes de implementar mudanças.',
+        persona: 'designer de produto pragmático', restrictions: 'Priorize clareza, acessibilidade e o menor conjunto de mudanças úteis.',
+        techniques: ['Contexto relevante', 'Restrições', 'Formato explícito'], tags: ['UX', 'interface'],
+        template: 'Atue como {{persona}}. Analise esta tela ou fluxo: {{tela_ou_fluxo}}. O usuário precisa conseguir {{objetivo_do_usuario}}. Identifique problemas de hierarquia, compreensão e acessibilidade. Entregue achados por prioridade, evidência, impacto e sugestão. Restrições: {{restricoes}}.'
+    },
+    {
+        id: 'revisao-codigo', name: 'Revisão de código orientada', domain: 'Engenharia',
+        subdomain: 'Desenvolvimento', objective: 'Revisar uma mudança com foco em riscos reais e próximos passos acionáveis.',
+        persona: 'engenheiro de software sênior e cuidadoso', restrictions: 'Não reescreva tudo. Diferencie bugs, riscos e preferências de estilo.',
+        techniques: ['Delimitadores', 'Restrições', 'Formato explícito'], tags: ['código', 'debug'],
+        template: 'Atue como {{persona}}. Revise o código entre os delimitadores abaixo. Contexto: {{contexto}}. Procure bugs, regressões, riscos de manutenção e testes ausentes. Responda por severidade, com arquivo, evidência e correção sugerida. {{restricoes}}. Código: ```{{codigo}}```.'
+    },
+    {
+        id: 'documentacao-decisao', name: 'Documentação de decisão', domain: 'Trabalho',
+        subdomain: 'Documentação', objective: 'Transformar contexto disperso em uma decisão clara e reutilizável.',
+        persona: 'facilitador técnico objetivo', restrictions: 'Não invente consenso ou informações ausentes; marque lacunas.',
+        techniques: ['Prompt chaining', 'Formato explícito'], tags: ['documentação', 'decisão'],
+        template: 'Atue como {{persona}}. Organize estas notas: {{notas}}. Produza um registro com contexto, problema, opções consideradas, decisão, consequências e próximos passos. Público: {{publico}}. Marque explicitamente o que ainda precisa de confirmação. {{restricoes}}.'
     }
 ];

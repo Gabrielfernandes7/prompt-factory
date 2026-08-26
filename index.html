@@ -22,6 +22,7 @@
                 <button class="mode-tab active" data-mode="explore" type="button">Explore</button>
                 <button class="mode-tab" data-mode="build" type="button">Build</button>
                 <button class="mode-tab" data-mode="library" type="button">Biblioteca</button>
+                <button class="mode-tab" data-mode="techniques" type="button">Técnicas</button>
             </nav>
         </div>
     </header>
@@ -107,10 +108,11 @@
         </section>
 
         <!-- Techniques -->
-        <section class="card principles">
-            <span class="section-label">Techniques</span>
-            <h2 class="section-title">Técnicas complementares</h2>
-            <span class="help">Melhorias que podem ser aplicadas a diferentes frameworks.</span>
+        <section class="card principles" id="techniquesPanel">
+            <div class="techniques-intro">
+                <div><span class="section-label">Catálogo</span><h2 class="section-title">Técnicas de prompting</h2><p class="help">Escolha uma técnica pelo problema que ela resolve. Os exemplos seguem uma abordagem prática e progressiva.</p></div>
+                <a class="source-link" href="https://www.promptingguide.ai/pt" target="_blank" rel="noreferrer">Ver guia de referência ↗</a>
+            </div>
             <div class="principle-grid" id="techniqueGrid"></div>
         </section>
     </main>

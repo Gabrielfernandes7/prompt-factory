@@ -50,10 +50,24 @@ body.mode-library .principles {
     display: block;
     grid-column: 1 / -1;
 }
+body.mode-library .principles { display: none; }
+body.mode-techniques .explore-panel,
+body.mode-techniques .builder-card,
+body.mode-techniques .preview-card,
+body.mode-techniques .library-guide { display: none; }
+body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
 
 .framework-card-head { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
 .theme-toggle:focus-visible, .mode-tab:focus-visible { outline: 3px solid rgba(99, 102, 241, .25); outline-offset: 2px; }
 .guide-empty { grid-column: 1 / -1; }
+.techniques-intro { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 18px; }
+.source-link { color: var(--primary); font-size: .82rem; font-weight: 650; white-space: nowrap; }
+.technique-card { display: flex; flex-direction: column; gap: 9px; min-height: 190px; }
+.technique-card h3 { margin: 0; font-size: 1rem; }
+.technique-card p { margin: 0; color: var(--muted); font-size: .86rem; }
+.technique-card .technique-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+.technique-level { border-radius: 999px; padding: 3px 8px; background: var(--surface-2); color: var(--muted); font-size: .72rem; }
+.technique-example { padding: 9px 10px; border-left: 3px solid var(--primary); background: var(--surface-2); color: var(--text); font-size: .8rem; }
 .prompt-library-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; background: var(--surface); }
 .prompt-library-card h3, .library-preview h3 { margin: 5px 0; font-size: 1rem; }
 .prompt-library-card p, .library-preview p { color: var(--muted); margin: 7px 0 12px; font-size: .88rem; }
