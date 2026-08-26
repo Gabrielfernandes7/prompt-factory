@@ -16,13 +16,13 @@
 }
 
 /* Explore Mode */
-body:not(.mode-build):not(.mode-library) .explore-panel {
+body:not(.mode-build):not(.mode-library):not(.mode-techniques) .explore-panel {
     display: block;
 }
-body:not(.mode-build):not(.mode-library) .builder-card,
-body:not(.mode-build):not(.mode-library) .preview-card,
-body:not(.mode-build):not(.mode-library) .library-guide,
-body:not(.mode-build):not(.mode-library) .principles {
+body:not(.mode-build):not(.mode-library):not(.mode-techniques) .builder-card,
+body:not(.mode-build):not(.mode-library):not(.mode-techniques) .preview-card,
+body:not(.mode-build):not(.mode-library):not(.mode-techniques) .library-guide,
+body:not(.mode-build):not(.mode-library):not(.mode-techniques) .principles {
     display: none;
 }
 
