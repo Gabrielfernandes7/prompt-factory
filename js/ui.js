@@ -45,6 +45,8 @@ export function initializeTheme(button) {
 }
 
 export function showMode(mode) {
+    document.body.classList.toggle('mode-explore', mode === 'explore');
     document.body.classList.toggle('mode-build', mode === 'build');
+    document.body.classList.toggle('mode-library', mode === 'library');
     document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
 }

@@ -7,11 +7,52 @@
 .mode-tab:hover { color: var(--text); }
 .mode-tab.active { color: var(--text); border-bottom-color: var(--focus); }
 .mode-tab span { font-size: .7rem; font-weight: 500; color: var(--muted); }
-.advanced-section { display: none; }
-body.mode-build .explore-panel { display: none; }
-body.mode-build .advanced-section { display: block; }
-.theme-toggle:focus-visible, .mode-tab:focus-visible { outline: 3px solid rgba(99, 102, 241, .25); outline-offset: 2px; }
+/* Mode visibility toggles */
+.builder-card,
+.preview-card,
+.library-guide,
+.principles {
+    display: none;
+}
+
+/* Explore Mode */
+body:not(.mode-build):not(.mode-library) .explore-panel {
+    display: block;
+}
+body:not(.mode-build):not(.mode-library) .builder-card,
+body:not(.mode-build):not(.mode-library) .preview-card,
+body:not(.mode-build):not(.mode-library) .library-guide,
+body:not(.mode-build):not(.mode-library) .principles {
+    display: none;
+}
+
+/* Build Mode */
+body.mode-build .explore-panel {
+    display: none;
+}
+body.mode-build .builder-card,
+body.mode-build .preview-card {
+    display: block;
+}
+body.mode-build .library-guide,
+body.mode-build .principles {
+    display: none;
+}
+
+/* Library Mode */
+body.mode-library .explore-panel,
+body.mode-library .builder-card,
+body.mode-library .preview-card {
+    display: none;
+}
+body.mode-library .library-guide,
+body.mode-library .principles {
+    display: block;
+    grid-column: 1 / -1;
+}
+
 .framework-card-head { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.theme-toggle:focus-visible, .mode-tab:focus-visible { outline: 3px solid rgba(99, 102, 241, .25); outline-offset: 2px; }
 .guide-empty { grid-column: 1 / -1; }
 
 /* Advanced options (CoT & Few-shot) styling */
