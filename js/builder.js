@@ -2,7 +2,7 @@ import { frameworks } from './data/frameworks.js';
 import { composePrompt } from './prompt.js';
 import { escapeHtml } from './ui.js';
 
-export function createBuilder({ select, form, info, preview, guide, search, level, toast }) {
+export function createBuilder({ select, form, info, preview, toast }) {
     const drafts = new Map();
     let activeFramework = Object.keys(frameworks)[0];
 
@@ -56,24 +56,6 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
         updatePreview();
     }
 
-    function renderGuide() {
-        const query = search.value.trim().toLowerCase();
-        const selectedLevel = level.value;
-        const entries = Object.entries(frameworks)
-            .filter(([key]) => key !== 'free')
-            .filter(([, framework]) => (selectedLevel === 'all' || framework.level === selectedLevel)
-                && `${framework.name} ${framework.what} ${framework.when} ${framework.best} ${framework.category}`.toLowerCase().includes(query));
-        guide.innerHTML = entries.length ? entries.map(([key, framework]) => `
-            <article class="tech-card framework-card ${activeFramework === key ? 'active' : ''}">
-                <div class="framework-card-head"><div><span class="badge">${escapeHtml(framework.category)}</span><h3>${escapeHtml(framework.short)}</h3></div><span class="badge ${framework.level === 'Avançado' ? 'advanced' : framework.level === 'Intermediário' ? 'medium' : ''}">${escapeHtml(framework.level)}</span></div>
-                <p>${escapeHtml(framework.what)}</p>
-                <div class="best"><strong>Use para:</strong> ${escapeHtml(framework.when)}</div>
-                <div class="best"><strong>Componentes:</strong> ${framework.fields.map(field => escapeHtml(field[0])).join(', ')}</div>
-                <div class="best"><strong>Exemplo:</strong> ${escapeHtml(framework.fields[0][2])}</div>
-                <button class="btn" type="button" data-use-tech="${key}">Usar no Builder</button>
-            </article>`).join('') : '<div class="empty guide-empty">Nenhum framework encontrado.</div>';
-    }
-
     function renderFewShots() {
         fewShotList.innerHTML = fewShots.map((shot, index) => `
             <div class="few-shot-item" id="fs-item-${shot.id}">
@@ -104,19 +86,11 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
         rememberDraft();
         activeFramework = key;
         renderForm();
-        renderGuide();
         if (announce) toast(`${frameworks[key].short} selecionado. Seu rascunho anterior foi mantido.`);
     }
 
     Object.entries(frameworks).forEach(([key, framework]) => select.add(new Option(framework.name, key)));
     select.addEventListener('change', () => selectFramework(select.value));
-    guide.addEventListener('click', event => {
-        const button = event.target.closest('[data-use-tech]');
-        if (button) selectFramework(button.dataset.useTech);
-    });
-    search.addEventListener('input', renderGuide);
-    level.addEventListener('change', renderGuide);
-
     // Advanced options listeners
     if (addFewShotBtn) {
         addFewShotBtn.addEventListener('click', () => {
@@ -143,7 +117,6 @@ export function createBuilder({ select, form, info, preview, guide, search, leve
     }
 
     renderForm();
-    renderGuide();
     return {
         selectFramework,
         clear() {

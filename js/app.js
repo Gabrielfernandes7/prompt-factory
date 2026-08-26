@@ -7,8 +7,7 @@ import { $, copyText, createToast, escapeHtml, initializeTheme, showMode } from 
 
 const toast = createToast($('#toast'));
 const builder = createBuilder({
-    select: $('#technique'), form: $('#promptForm'), info: $('#techInfo'), preview: $('#preview'),
-    guide: $('#techGrid'), search: $('#guideSearch'), level: $('#guideLevel'), toast
+    select: $('#technique'), form: $('#promptForm'), info: $('#techInfo'), preview: $('#preview'), toast
 });
 const explore = createExplore({
     categories: $('#exploreCategories'), result: $('#exploreResult'), title: $('#exploreResultTitle'),
@@ -25,7 +24,7 @@ const domains = [...new Set(promptLibrary.map(prompt => prompt.domain))];
 const libraryTechniques = [...new Set(promptLibrary.flatMap(prompt => prompt.techniques))];
 $('#guideDomain').insertAdjacentHTML('beforeend', domains.map(domain => `<option value="${escapeHtml(domain)}">${escapeHtml(domain)}</option>`).join(''));
 $('#guideTechnique').insertAdjacentHTML('beforeend', libraryTechniques.map(technique => `<option value="${escapeHtml(technique)}">${escapeHtml(technique)}</option>`).join(''));
-createPromptLibrary({ search: $('#librarySearch'), domain: $('#guideDomain'), technique: $('#guideTechnique'), results: $('#promptLibraryGrid'), preview: $('#libraryPreview'), toast });
+createPromptLibrary({ search: $('#librarySearch'), domain: $('#guideDomain'), technique: $('#guideTechnique'), results: $('#promptLibraryGrid'), summary: $('#libraryResults'), preview: $('#libraryPreview'), toast });
 
 const techniqueDetails = {
     context: ['Básico', 'Dê ao modelo somente o contexto que muda a decisão.', 'Use antes de pedir uma análise ou transformação.'],
@@ -43,7 +42,18 @@ const techniqueDetails = {
 };
 $('#techniqueGrid').innerHTML = techniques.map(technique => { const [level, when, example] = techniqueDetails[technique.id]; return `<article class="principle technique-card"><span class="section-label">${escapeHtml(level)}</span><h3>${escapeHtml(technique.name)}</h3><p>${escapeHtml(technique.description)}</p><div class="technique-example">${escapeHtml(when)}</div><div class="technique-meta"><span class="technique-level">Exemplo: ${escapeHtml(example)}</span></div></article>`; }).join('');
 
-document.querySelectorAll('[data-mode]').forEach(tab => tab.addEventListener('click', () => showMode(tab.dataset.mode)));
+const modeTabs = [...document.querySelectorAll('[data-mode]')];
+modeTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => showMode(tab.dataset.mode));
+    tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? modeTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + modeTabs.length) % modeTabs.length;
+        const nextTab = modeTabs[nextIndex];
+        nextTab.focus();
+        showMode(nextTab.dataset.mode);
+    });
+});
 $('#copyBtn').addEventListener('click', () => copyText(builder.getPrompt(), toast));
 $('#clearBtn').addEventListener('click', builder.clear);
 $('#exploreRestartBtn').addEventListener('click', explore.restart);

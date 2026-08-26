@@ -48,5 +48,9 @@ export function showMode(mode) {
     document.body.classList.toggle('mode-explore', mode === 'explore');
     document.body.classList.toggle('mode-build', mode === 'build');
     document.body.classList.toggle('mode-library', mode === 'library');
-    document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
+    document.querySelectorAll('.mode-tab').forEach(tab => {
+        const active = tab.dataset.mode === mode;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', String(active));
+    });
 }

@@ -69,6 +69,9 @@ body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
 .technique-level { border-radius: 999px; padding: 3px 8px; background: var(--surface-2); color: var(--muted); font-size: .72rem; }
 .technique-example { padding: 9px 10px; border-left: 3px solid var(--primary); background: var(--surface-2); color: var(--text); font-size: .8rem; }
 .prompt-library-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; background: var(--surface); }
+.prompt-library-card { display: flex; flex-direction: column; min-height: 190px; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.prompt-library-card:hover { border-color: var(--primary); box-shadow: 0 6px 18px rgba(47, 111, 237, .08); transform: translateY(-1px); }
+.prompt-library-card .library-preview-btn { margin-top: 2px; }
 .prompt-library-card h3, .library-preview h3 { margin: 5px 0; font-size: 1rem; }
 .prompt-library-card p, .library-preview p { color: var(--muted); margin: 7px 0 12px; font-size: .88rem; }
 .prompt-tags { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -78,6 +81,8 @@ body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
 .library-fields label { font-size: .82rem; }
 .library-fields input { margin-top: 4px; }
 .library-preview pre { white-space: pre-wrap; margin: 16px 0 0; padding: 13px; border-radius: 8px; background: var(--surface); font: .86rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.results-summary { margin: 16px 0 -5px; color: var(--muted); font-size: .82rem; }
+.library-preview:focus { outline: 3px solid rgba(47, 111, 237, .16); outline-offset: 2px; }
 
 /* Advanced options (CoT & Few-shot) styling */
 .advanced-options-section {
@@ -193,4 +198,20 @@ body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
     min-height: 50px;
     font-size: 0.85rem;
     padding: 6px 10px;
+}
+
+@media (max-width: 560px) {
+    .site-header { padding: 17px 0 12px; }
+    .mode-nav { margin: 15px -10px 0; padding: 0 10px; overflow-x: auto; scrollbar-width: none; }
+    .mode-nav::-webkit-scrollbar { display: none; }
+    .mode-tab { flex: 0 0 auto; min-height: 44px; padding: 10px 12px; }
+    .techniques-intro { flex-direction: column; gap: 8px; }
+    .source-link { white-space: normal; }
+    .prompt-library-card { min-height: 0; }
+    .library-preview { padding: 14px; }
+    .library-preview .framework-card-head { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prompt-library-card:hover { transform: none; }
 }
