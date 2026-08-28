@@ -22,7 +22,7 @@
                 <button class="mode-tab active" data-mode="explore" aria-controls="explorePanel" aria-selected="true" role="tab" type="button">Explorar</button>
                 <button class="mode-tab" data-mode="build" aria-controls="buildPanel" aria-selected="false" role="tab" type="button">Construir</button>
                 <button class="mode-tab" data-mode="library" aria-controls="libraryPanel" aria-selected="false" role="tab" type="button">Biblioteca</button>
-                <button class="mode-tab" data-mode="techniques" aria-controls="techniquesPanel" aria-selected="false" role="tab" type="button">Técnicas</button>
+                <button class="mode-tab" data-mode="techniques" aria-controls="techniquesPanel" aria-selected="false" role="tab" type="button">Técnicas &amp; Workflows</button>
             </nav>
         </div>
     </header>
@@ -55,18 +55,19 @@
             
             <div class="advanced-options-section">
                 <hr class="options-divider">
-                <h3 class="options-title">Técnicas Avançadas (DAIR.AI)</h3>
-                
-                <div class="field option-field">
-                    <label class="switch-container" for="cotToggle">
-                        <input type="checkbox" id="cotToggle">
-                        <span class="switch-slider"></span>
-                        <span class="switch-label">Ativar Chain-of-Thought (CoT)</span>
-                    </label>
-                    <span class="help">Anexa instruções para que o modelo processe e justifique sua resposta passo a passo.</span>
-                </div>
+                <h3 class="options-title">Componha sua estratégia</h3>
+                <p class="help">Combine uma estrutura com técnicas complementares e, quando fizer sentido, um workflow.</p>
+                <fieldset class="composition-options">
+                    <legend>Técnicas</legend>
+                    <div id="builderTechniques" class="composition-grid"></div>
+                </fieldset>
 
-                <div class="field option-field">
+                <fieldset class="composition-options">
+                    <legend>Workflow</legend>
+                    <div id="builderWorkflows" class="composition-grid"></div>
+                </fieldset>
+
+                <div class="field option-field" id="fewShotFields" hidden>
                     <label>Exemplos de Referência (Few-Shot)</label>
                     <span class="help">Adicione pares de exemplo de entrada e saída para calibrar o estilo e o formato do modelo.</span>
                     <div id="fewShotList" class="few-shot-list"></div>
@@ -107,10 +108,13 @@
         <!-- Techniques -->
         <section class="card principles" id="techniquesPanel" role="tabpanel">
             <div class="techniques-intro">
-                <div><span class="section-label">Catálogo</span><h2 class="section-title">Técnicas de prompting</h2><p class="help">Escolha uma técnica pelo problema que ela resolve. Os exemplos seguem uma abordagem prática e progressiva.</p></div>
-                <a class="source-link" href="https://www.promptingguide.ai/pt" target="_blank" rel="noreferrer">Ver guia de referência ↗</a>
+                <div><span class="section-label">Catálogo</span><h2 class="section-title">Técnicas de prompting</h2><p class="help">Técnicas complementam o framework e resolvem necessidades específicas do prompt.</p></div>
             </div>
             <div class="principle-grid" id="techniqueGrid"></div>
+            <div class="techniques-intro catalog-separator">
+                <div><span class="section-label">Estratégias de execução</span><h2 class="section-title">Workflows</h2><p class="help">Workflows organizam ciclos de investigação, decisão e ação; não são frameworks de estruturação.</p></div>
+            </div>
+            <div class="principle-grid" id="workflowGrid"></div>
         </section>
     </main>
 

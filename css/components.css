@@ -68,6 +68,14 @@ body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
 .technique-card .technique-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
 .technique-level { border-radius: 999px; padding: 3px 8px; background: var(--surface-2); color: var(--muted); font-size: .72rem; }
 .technique-example { padding: 9px 10px; border-left: 3px solid var(--primary); background: var(--surface-2); color: var(--text); font-size: .8rem; }
+.catalog-separator { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
+.composition-options { margin: 16px 0 0; padding: 0; border: 0; }
+.composition-options legend { margin-bottom: 8px; font-weight: 700; }
+.composition-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.composition-choice { display: flex; align-items: flex-start; gap: 8px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+.composition-choice input { width: auto; margin-top: 2px; }
+.composition-choice span { display: grid; gap: 2px; font-size: .84rem; }
+.composition-choice small { color: var(--muted); line-height: 1.35; }
 .prompt-library-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; background: var(--surface); }
 .prompt-library-card { display: flex; flex-direction: column; min-height: 190px; transition: border-color .15s, box-shadow .15s, transform .15s; }
 .prompt-library-card:hover { border-color: var(--primary); box-shadow: 0 6px 18px rgba(47, 111, 237, .08); transform: translateY(-1px); }
@@ -201,6 +209,7 @@ body.mode-techniques .principles { display: block; grid-column: 1 / -1; }
 }
 
 @media (max-width: 560px) {
+    .composition-grid { grid-template-columns: 1fr; }
     .site-header { padding: 17px 0 12px; }
     .mode-nav { margin: 15px -10px 0; padding: 0 10px; overflow-x: auto; scrollbar-width: none; }
     .mode-nav::-webkit-scrollbar { display: none; }

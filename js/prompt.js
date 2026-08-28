@@ -1,4 +1,4 @@
-export function composePrompt(form, cotActive = false, fewShots = []) {
+export function composePrompt(form, selectedTechniques = [], selectedWorkflow = null, fewShots = []) {
     const promptParts = [...form.querySelectorAll('textarea')]
         .map(field => ({ label: field.dataset.label, value: field.value.trim() }))
         .filter(field => field.value)
@@ -23,9 +23,13 @@ export function composePrompt(form, cotActive = false, fewShots = []) {
         }
     }
 
-    // Append Chain-of-Thought
-    if (cotActive) {
-        finalPrompt += `\n\nPense passo a passo para resolver o problema. Explique o raciocínio logicamente antes de apresentar a resposta final.`;
+    const techniqueInstructions = selectedTechniques.map(technique => technique.instruction).filter(Boolean);
+    if (techniqueInstructions.length) {
+        finalPrompt += `\n\nTécnicas complementares:\n${techniqueInstructions.map(instruction => `- ${instruction}`).join('\n')}`;
+    }
+
+    if (selectedWorkflow) {
+        finalPrompt += `\n\nWorkflow:\n${selectedWorkflow.instruction}`;
     }
 
     return finalPrompt.trim();

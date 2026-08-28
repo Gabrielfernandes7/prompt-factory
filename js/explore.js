@@ -16,7 +16,8 @@ export function createExplore({ categories, result, title, needs, recommendation
     }
 
     function techniqueName(id) {
-        return techniques.find(technique => technique.id === id)?.name || id;
+        const aliases = { 'structured-output': 'output-specification' };
+        return techniques.find(technique => technique.id === (aliases[id] || id))?.name || id;
     }
 
     function recommend(id) {
