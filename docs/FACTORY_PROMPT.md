@@ -69,13 +69,23 @@ O Prompt Factory não garante que determinado framework produzirá necessariamen
 
 **P04 — Framework não é técnica.** Frameworks estruturam o prompt; técnicas complementares enriquecem a estratégia.
 
-**P05 — Exemplos ensinam, não preenchem.** Exemplos e placeholders nunca entram automaticamente no conteúdo.
+**P05 — Workflow não é framework.** Workflows organizam ciclos de investigação, decisão e ação e podem ser combinados com uma estrutura e técnicas.
 
-**P06 — O conteúdo pertence ao usuário.** O sistema não persiste nem reutiliza o conteúdo no MVP.
+**P06 — Exemplos ensinam, não preenchem.** Exemplos e placeholders nunca entram automaticamente no conteúdo.
 
-**P07 — Estrutura visível.** O usuário deve entender de onde cada parte do prompt final surgiu.
+**P07 — O conteúdo pertence ao usuário.** O sistema não persiste nem reutiliza o conteúdo no MVP.
 
-**P08 — Recomendações explicáveis.** Toda recomendação deve informar por que determinada abordagem é adequada.
+**P08 — Estrutura visível.** O usuário deve entender de onde cada parte do prompt final surgiu.
+
+**P09 — Recomendações explicáveis.** Toda recomendação deve informar por que determinada abordagem é adequada.
+
+### Catálogo inicial do MVP
+
+- **Frameworks:** CTF, RTF, RISEN, CO-STAR e CRISPE;
+- **Técnicas:** Few-shot, Decomposition, Constraints, Output Specification, Reflection e Step-back;
+- **Workflows:** OODA e ReAct.
+
+O Builder deve permitir a composição `framework + técnicas + workflow` sem preencher silenciosamente o conteúdo principal do usuário. O workflow é opcional e apenas um pode ser aplicado por vez, evitando instruções operacionais concorrentes.
 
 ---
 

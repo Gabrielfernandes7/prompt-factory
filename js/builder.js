@@ -1,4 +1,6 @@
 import { frameworks } from './data/frameworks.js';
+import { techniques } from './data/techniques.js';
+import { workflows } from './data/workflows.js';
 import { composePrompt } from './prompt.js';
 import { escapeHtml } from './ui.js';
 
@@ -6,13 +8,21 @@ export function createBuilder({ select, form, info, preview, toast }) {
     const drafts = new Map();
     let activeFramework = Object.keys(frameworks)[0];
 
-    // Advanced features selectors
-    const cotToggle = document.getElementById('cotToggle');
+    const techniqueOptions = document.getElementById('builderTechniques');
+    const workflowOptions = document.getElementById('builderWorkflows');
+    const fewShotFields = document.getElementById('fewShotFields');
     const fewShotList = document.getElementById('fewShotList');
     const addFewShotBtn = document.getElementById('addFewShotBtn');
 
     let fewShots = []; // array of { id, input, output }
     let fewShotIdCounter = 0;
+
+    const getSelectedTechniques = () => [...techniqueOptions.querySelectorAll('input:checked')]
+        .map(input => techniques.find(technique => technique.id === input.value));
+    const getSelectedWorkflow = () => {
+        const selected = workflowOptions.querySelector('input:checked');
+        return selected ? workflows.find(workflow => workflow.id === selected.value) : null;
+    };
 
     const readFields = () => Object.fromEntries(
         [...form.querySelectorAll('textarea')].map(field => [field.dataset.label, field.value])
@@ -31,8 +41,7 @@ export function createBuilder({ select, form, info, preview, toast }) {
     }
 
     function updatePreview() {
-        const cotActive = cotToggle ? cotToggle.checked : false;
-        const content = composePrompt(form, cotActive, getFewShotsData());
+        const content = composePrompt(form, getSelectedTechniques(), getSelectedWorkflow(), getFewShotsData());
         preview.innerHTML = content
             ? escapeHtml(content)
             : '<span class="preview-empty-title">Seu prompt aparecerá aqui.</span><span>Escolha um framework e preencha os campos ao lado.</span>';
@@ -89,6 +98,14 @@ export function createBuilder({ select, form, info, preview, toast }) {
         if (announce) toast(`${frameworks[key].short} selecionado. Seu rascunho anterior foi mantido.`);
     }
 
+    techniqueOptions.innerHTML = techniques.map(technique => `<label class="composition-choice"><input type="checkbox" value="${escapeHtml(technique.id)}"><span><strong>${escapeHtml(technique.name)}</strong><small>${escapeHtml(technique.description)}</small></span></label>`).join('');
+    workflowOptions.innerHTML = `<label class="composition-choice"><input type="radio" name="builder-workflow" value="" checked><span><strong>Nenhum</strong><small>Use somente o framework e as técnicas selecionadas.</small></span></label>${workflows.map(workflow => `<label class="composition-choice"><input type="radio" name="builder-workflow" value="${escapeHtml(workflow.id)}"><span><strong>${escapeHtml(workflow.name)}</strong><small>${escapeHtml(workflow.steps)}</small></span></label>`).join('')}`;
+    techniqueOptions.addEventListener('change', () => {
+        fewShotFields.hidden = !techniqueOptions.querySelector('input[value="few-shot"]').checked;
+        updatePreview();
+    });
+    workflowOptions.addEventListener('change', updatePreview);
+
     Object.entries(frameworks).forEach(([key, framework]) => select.add(new Option(framework.name, key)));
     select.addEventListener('change', () => selectFramework(select.value));
     // Advanced options listeners
@@ -112,23 +129,21 @@ export function createBuilder({ select, form, info, preview, toast }) {
         });
     }
 
-    if (cotToggle) {
-        cotToggle.addEventListener('change', updatePreview);
-    }
-
     renderForm();
     return {
         selectFramework,
         clear() {
-            const currentPrompt = composePrompt(form, cotToggle ? cotToggle.checked : false, getFewShotsData());
+            const currentPrompt = composePrompt(form, getSelectedTechniques(), getSelectedWorkflow(), getFewShotsData());
             if (!currentPrompt || confirm('Limpar todos os campos deste framework?')) {
                 drafts.delete(activeFramework);
                 fewShots = [];
-                if (cotToggle) cotToggle.checked = false;
+                techniqueOptions.querySelectorAll('input').forEach(input => { input.checked = false; });
+                workflowOptions.querySelector('input[value=""]').checked = true;
+                fewShotFields.hidden = true;
                 renderFewShots();
                 renderForm();
             }
         },
-        getPrompt: () => composePrompt(form, cotToggle ? cotToggle.checked : false, getFewShotsData())
+        getPrompt: () => composePrompt(form, getSelectedTechniques(), getSelectedWorkflow(), getFewShotsData())
     };
 }
